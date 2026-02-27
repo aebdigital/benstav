@@ -18,9 +18,9 @@ export default function Contact() {
 
   return (
     <section id="kontakt" className="py-20 md:py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="w-[90vw] max-w-[90vw] mx-auto">
         <div className="text-center mb-16">
-          <h2 className="font-[var(--font-exo)] text-3xl md:text-4xl font-bold text-dark mb-2">
+          <h2 className="font-[var(--font-exo)] text-4xl md:text-4xl font-bold text-dark mb-2">
             <span className="text-primary">Kontakt</span>ujte nás
           </h2>
           <div className="w-16 h-1 bg-primary mx-auto mb-6" />
@@ -170,24 +170,18 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Map placeholder */}
-            <div className="bg-light rounded-xl h-48 flex items-center justify-center">
-              <div className="text-center text-gray-light/50">
-                <svg
-                  className="w-10 h-10 mx-auto mb-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                  />
-                </svg>
-                <span className="text-sm">Štiavnické Bane, Slovensko</span>
-              </div>
+            {/* Google Map */}
+            <div className="rounded-xl overflow-hidden h-64">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2636.5!2d18.87!3d48.45!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476acdf296ffce59%3A0xe2893b068061c49e!2z!5e0!3m2!1ssk!2ssk!4v1"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="BenStav BS - mapa"
+              />
             </div>
           </div>
         </div>

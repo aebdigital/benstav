@@ -6,10 +6,11 @@ import Partners from "@/components/Partners";
 import Gallery from "@/components/Gallery";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export default function Home() {
   return (
-    <>
+    <SmoothScroll>
       <Navbar />
       <Hero />
       <About />
@@ -18,6 +19,6 @@ export default function Home() {
       <Gallery />
       <Contact />
       <Footer />
-    </>
+    </SmoothScroll>
   );
 }

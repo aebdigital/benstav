@@ -1,16 +1,43 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current || !imageRef.current) return;
+      const scrollY = window.scrollY;
+      const sectionHeight = sectionRef.current.offsetHeight;
+
+      if (scrollY <= sectionHeight) {
+        // 20% parallax: image moves up at 20% of scroll speed
+        imageRef.current.style.transform = `translateY(${scrollY * 0.2}px)`;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center text-white overflow-hidden">
-      {/* Background image */}
-      <Image
-        src="/images/hero.jpg"
-        alt="BenStav BS - stavebné práce"
-        fill
-        className="object-cover"
-        priority
-      />
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center text-white overflow-hidden"
+    >
+      {/* Background image with parallax */}
+      <div ref={imageRef} className="absolute inset-0 will-change-transform">
+        <Image
+          src="/images/hero.jpg"
+          alt="BenStav BS - stavebné práce"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
 
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/70" />
@@ -20,13 +47,13 @@ export default function Hero() {
       <div className="absolute bottom-1/4 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-        <h1 className="font-[var(--font-exo)] text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+        <h1 className="font-[var(--font-exo)] text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
           Ben<span className="text-primary">Stav</span> BS
         </h1>
-        <p className="text-xl md:text-2xl lg:text-3xl font-light text-white/90 mb-4 max-w-3xl mx-auto">
+        <p className="text-2xl md:text-2xl lg:text-3xl font-light text-white/90 mb-4 max-w-3xl mx-auto">
           Všetky riešenia pre stavebné práce s dlhoročnými skúsenosťami
         </p>
-        <p className="text-base md:text-lg text-white/60 mb-10 max-w-2xl mx-auto">
+        <p className="text-lg md:text-lg text-white/60 mb-10 max-w-2xl mx-auto">
           Stavebné a výkopové práce, práce s pásovým nakladačom, práce s vibračným valcom
           s nosnosťou do 2 ton
         </p>

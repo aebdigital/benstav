@@ -49,9 +49,9 @@ const services = [
 export default function Services() {
   return (
     <section id="sluzby" className="py-20 md:py-28 bg-light">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="w-[90vw] max-w-[90vw] mx-auto">
         <div className="text-center mb-16">
-          <h2 className="font-[var(--font-exo)] text-3xl md:text-4xl font-bold text-dark mb-2">
+          <h2 className="font-[var(--font-exo)] text-4xl md:text-4xl font-bold text-dark mb-2">
             Naše <span className="text-primary">služby</span>
           </h2>
           <div className="w-16 h-1 bg-primary mx-auto mb-6" />
