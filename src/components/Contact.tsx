@@ -2,18 +2,42 @@
 
 import { useState, type FormEvent } from "react";
 
+type FormStatus = "idle" | "sending" | "success" | "error";
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Form submission logic would go here
-    alert("Ďakujeme za vašu správu! Budeme vás kontaktovať čo najskôr.");
-    setFormData({ name: "", email: "", message: "" });
+    setStatus("sending");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+        setErrorMessage(data.error || "Nepodarilo sa odoslať správu.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMessage("Chyba pripojenia. Skúste to prosím neskôr.");
+    }
   };
 
   return (
@@ -44,6 +68,7 @@ export default function Contact() {
                 className="w-full px-4 py-3 border border-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                 placeholder="Vaše meno"
                 required
+                disabled={status === "sending"}
               />
             </div>
             <div>
@@ -58,6 +83,7 @@ export default function Contact() {
                 className="w-full px-4 py-3 border border-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                 placeholder="vas@email.sk"
                 required
+                disabled={status === "sending"}
               />
             </div>
             <div>
@@ -72,14 +98,39 @@ export default function Contact() {
                 className="w-full px-4 py-3 border border-gray/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors resize-none"
                 placeholder="Vaša správa..."
                 required
+                disabled={status === "sending"}
               />
             </div>
+
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors uppercase tracking-wider"
+              disabled={status === "sending"}
+              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors uppercase tracking-wider disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              Odoslať správu
+              {status === "sending" ? (
+                <>
+                  <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Odosielam...
+                </>
+              ) : (
+                "Odoslať správu"
+              )}
             </button>
+
+            {/* Status messages */}
+            {status === "success" && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm">
+                Ďakujeme za vašu správu! Budeme vás kontaktovať čo najskôr.
+              </div>
+            )}
+            {status === "error" && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm">
+                {errorMessage}
+              </div>
+            )}
           </form>
 
           {/* Contact info */}
